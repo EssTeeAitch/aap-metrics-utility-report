@@ -165,6 +165,10 @@ organization", use **Usage by organizations** or **Jobs**.
 5. **The scripts don't affect scheduled reporting.** They set
    `METRICS_UTILITY_DISABLE_SAVE_LAST_GATHERED_ENTRIES=true`, so the marker that a scheduled
    setup relies on is left alone.
+6. **One gather covers at most 28 days.** metrics-utility quietly cuts a longer range short and
+   logs `End of the collection interval is greater than 28 days from start`. The scripts
+   handle this by gathering in 28-day chunks. Keep it in mind if you run
+   `metrics-utility` by hand.
 
 ---
 
@@ -204,6 +208,9 @@ hour and build the report once a month.
    ```bash
    sudo -u awx bash -c '. /var/lib/awx/metrics-utility.env && metrics-utility gather_automation_controller_billing_data --ship --since=2026-10-01 --until=10m'
    ```
+   One gather covers at most 28 days. To go back further, run it once per 28 days, oldest first,
+   e.g. `--since=2026-08-01 --until=2026-08-29`, then `--since=2026-08-29 --until=2026-09-26`,
+   and so on, finishing with `--until=10m`.
 3. **Add the schedule** with `sudo crontab -u awx -e`:
    ```
    5 * * * *  . /var/lib/awx/metrics-utility.env && metrics-utility gather_automation_controller_billing_data --ship --until=10m >/dev/null 2>&1

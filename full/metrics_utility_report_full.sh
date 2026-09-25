@@ -54,10 +54,16 @@ echo "Output folder : $SHIP_PATH"
 F='pkg_resources|iter_entry_points'   # hide a harmless Python deprecation warning
 
 # ---- 1. Gather (reads the controller database directly, not the API) ---------
-# --until is EXCLUSIVE for gather, so go one day past UNTIL
+# --until is EXCLUSIVE for gather, so go one day past UNTIL. One gather covers at most
+# 28 days (longer ranges are silently cut short), so collect in 28-day chunks.
 t0=$(date +%s)
-metrics-utility gather_automation_controller_billing_data --ship \
-  --since="$SINCE" --until="$(date -u -d "$UNTIL +1 day" +%F)" 2>&1 | grep -vE "$F" || true
+s=$SINCE; end=$(date -u -d "$UNTIL +1 day" +%F)
+while [[ "$s" < "$end" ]]; do
+  e=$(date -u -d "$s +28 days" +%F); [[ "$e" > "$end" ]] && e=$end
+  metrics-utility gather_automation_controller_billing_data --ship \
+    --since="$s" --until="$e" 2>&1 | grep -vE "$F" || true
+  s=$e
+done
 t1=$(date +%s)
 
 # ---- 2. Build the report (--until is inclusive here) -------------------------

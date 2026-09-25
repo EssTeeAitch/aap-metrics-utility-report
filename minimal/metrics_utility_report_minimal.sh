@@ -32,8 +32,14 @@ export METRICS_UTILITY_DISABLE_SAVE_LAST_GATHERED_ENTRIES=true          # leave 
 [ -r /etc/tower/SECRET_KEY ] || { echo "Run as the awx user: sudo -u awx bash $0" >&2; exit 1; }
 mkdir -p "$SHIP_PATH"
 
-# gather --until is EXCLUSIVE (go one day past UNTIL); build_report --until is inclusive
-metrics-utility gather_automation_controller_billing_data --ship --since="$SINCE" --until="$(date -u -d "$UNTIL +1 day" +%F)"
+# gather --until is EXCLUSIVE (go one day past UNTIL) and one gather covers at most 28 days,
+# so collect in 28-day chunks; build_report --until is inclusive
+s=$SINCE; end=$(date -u -d "$UNTIL +1 day" +%F)
+while [[ "$s" < "$end" ]]; do
+  e=$(date -u -d "$s +28 days" +%F); [[ "$e" > "$end" ]] && e=$end
+  metrics-utility gather_automation_controller_billing_data --ship --since="$s" --until="$e"
+  s=$e
+done
 metrics-utility build_report --since="$SINCE" --until="$UNTIL" --force
 
 REPORT=$(find "$SHIP_PATH/reports" -name "CCSPv2-${SINCE}--${UNTIL}.xlsx" | head -1)
