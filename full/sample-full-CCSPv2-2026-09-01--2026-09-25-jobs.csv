@@ -1,0 +1,15 @@
+Job template name,Organization name,Job runs,Unique managed nodes automated,Non-unique managed nodes automated,Number of task runs,First run,Last run
+Acme Infra - Deploy,Acme Corp,16,4,32,702,2026-09-17 18:56:19.583000,2026-09-25 04:00:16.138000
+Acme NetOps - Health Check,Acme Corp,76,4,149,1754,2026-09-17 18:56:30.179000,2026-09-25 14:30:16.143000
+Globex Infra - Deploy,Globex Inc,15,4,29,432,2026-09-17 18:56:31.600000,2026-09-25 02:42:41.918000
+Globex Security - Compliance Scan,Globex Inc,91,4,181,2510,2026-09-17 18:56:33.040000,2026-09-25 12:30:16.275000
+Initech DevOps - App Deploy,Initech LLC,16,3,17,377,2026-09-17 18:56:36.247000,2026-09-25 02:43:45.682000
+Initech Infra - Deploy,Initech LLC,10,4,19,174,2026-09-17 18:56:34.574000,2026-09-25 02:42:42.001000
+KVM - List VM Snapshots,Lab Operations,125,1,125,365,2026-09-21 20:39:09.646000,2026-09-25 14:30:16.279000
+KVM - Revert VMs to Snapshot,Lab Operations,4,1,4,37,2026-09-21 20:39:44.271000,2026-09-21 22:15:48.312000
+KVM - Snapshot VMs,Lab Operations,2,1,2,20,2026-09-21 20:39:27.597000,2026-09-21 22:15:00.248000
+KVM - Wait for All VMs Ready,Lab Operations,5,1,5,10,2026-09-22 20:35:43.515000,2026-09-25 02:42:11.742000
+"KVM Host - Prepare (Day 1, admin)",Lab Operations,10,1,10,154,2026-09-21 21:06:34.564000,2026-09-24 17:51:15.906000
+KVM VMs - Destroy,Lab Operations,3,1,3,183,2026-09-22 19:44:59.491000,2026-09-25 02:00:16.458000
+KVM VMs - Provision,Lab Operations,3,1,3,633,2026-09-22 19:45:19.805000,2026-09-25 02:01:05.466000
+KVM VMs - Rebuild (wipe and reinstall),Lab Operations,4,1,4,335,2026-09-21 21:51:43.189000,2026-09-22 21:20:38.618000
